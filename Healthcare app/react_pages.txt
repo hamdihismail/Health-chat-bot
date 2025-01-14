@@ -1,0 +1,38 @@
+// ChatPage
+import React from 'react';
+import { Chat } from '../components';
+import { Link } from 'react-router-dom';
+
+const ChatPage = () => {
+  return (
+    <main>
+      <Link to="/">
+        <h1>Login</h1>
+      </Link>
+      <Chat />
+    </main>
+  );
+};
+
+export default ChatPage;
+**********************************
+
+//LoginPage
+import React from 'react';
+import { SignIn } from '../components';
+import { Link } from 'react-router-dom';
+
+const LoginPage = () => {
+  return (
+    <main>
+      <Link to="/chat">
+        <h1>Chat</h1>
+      </Link>
+      <SignIn />
+    </main>
+  );
+};
+
+export default LoginPage;
+
+

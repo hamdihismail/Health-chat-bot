@@ -1,0 +1,253 @@
+// Chat component Frontend
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+const Chat = () => {
+  const [messages, setMessages] = useState([
+    { sender: 'bot', text: 'Hi, how can I help you?' },
+  ]);
+
+  const [input, setInput] = useState('');
+
+  const handleSend = async () => {
+    if (input.trim()) {
+      // Append user message
+      const newMessages = [...messages, { sender: 'user', text: input }];
+      setMessages(newMessages);
+
+      try {
+        // Send user message to FastAPI and get the AI bot response
+        const response = axios.post('chat/3', {
+          message: input,
+          userId: 1,
+        });
+        const botResponse = response.data.response;
+        console.log(`response ${(await response).data}`);
+
+        // Append AI bot response
+        setMessages([...newMessages, { sender: 'bot', text: botResponse }]);
+      } catch (error) {
+        console.error('Error sending message to FastAPI', error.response.data);
+        setMessages([
+          ...newMessages,
+          { sender: 'bot', text: 'Something went wrong. Please try again.' },
+        ]);
+      }
+
+      setInput('');
+    }
+  };
+  useEffect(() => {
+    // Scroll to the bottom whenever messages are updated
+    const chatWindow = document.querySelector('.chat-window');
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }, [messages]);
+
+  return (
+    <Wrapper className="section-center page-100">
+      <div className="chatbox">
+        <div className="header">
+          <div className="bot-info">
+            <img
+              src="'https://api.adorable.io/avatars/23/abott@adorable.png'"
+              alt="bot"
+              className="bot-avatar"
+            />
+            <span className="bot-name">ChatBot</span>
+            <span className="status">● online</span>
+          </div>
+          <button className="logout-button">Logout</button>
+        </div>
+        <div className="chat-window">
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.sender}`}>
+              {message.text}
+            </div>
+          ))}
+        </div>
+        <div className="input-box">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask your question..."
+          />
+          <button onClick={handleSend} className="send-button">
+            ➤
+          </button>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+const Wrapper = styled.section`
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media (min-width: 1280px) {
+    padding: 15rem 0;
+  }
+
+  .chatbox {
+    width: 429px;
+    height: 533px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    background-color: #e0c0d1;
+    font-family: Arial, sans-serif;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #9d4b96;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .bot-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .bot-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .bot-name {
+    margin-left: 10px;
+    font-size: 16px;
+    color: white;
+  }
+
+  .status {
+    margin-left: 5px;
+    color: green;
+    font-size: 14px;
+  }
+
+  .logout-button {
+    background-color: #b066c1;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .logout-button:hover {
+    background-color: #7a3e84;
+  }
+
+  .chat-window {
+    /* flex: 1; */
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: white;
+  }
+
+  .message {
+    margin: 5px 0;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 70%;
+  }
+
+  .message.bot {
+    background-color: var(--clr-grey-6);
+    align-self: flex-start;
+  }
+
+  .message.user {
+    background-color: #d88bd1;
+    align-self: flex-end;
+    color: white;
+  }
+
+  .input-box {
+    display: flex;
+    padding: 10px;
+    background-color: #e0c0d1;
+    border-radius: 0 0 10px 10px;
+  }
+
+  input[type='text'] {
+    flex: 1;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+  }
+
+  .send-button {
+    background-color: #9d4b96;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .send-button:hover {
+    background-color: #7a3e84;
+  }
+`;
+
+export default Chat;
+
+******************************************
+
+// SignIn component frontend
+import React from 'react';
+import styled from 'styled-components';
+const SignIn = () => {
+  return (
+    <Wrapper className="section-center page-100">
+      <h1>Login Page</h1>
+      <form>
+        <div className="container">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username"></input>
+        </div>
+        <div className="container">
+          <label for="password">Password</label>
+          <input type="text" name="password" id="password"></input>
+        </div>
+      </form>
+    </Wrapper>
+  );
+};
+const Wrapper = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+`;
+
+export default SignIn;
+*************************************************
+
+
