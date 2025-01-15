@@ -1,6 +1,6 @@
 import requests
 
-places_api = 'AIzaSyAhXIbqYmKSZaR4dB4nmBQ49pzUFek64E0'
+places_api = ''
 
 def find_nearby(language,region,latitude,longitude,radius,service_type):
 
