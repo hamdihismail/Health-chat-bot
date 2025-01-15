@@ -4,7 +4,7 @@ import requests
 # import location_service
 req = requests
 
-openai.api_key = "sk-proj-SdMnSPiKizNSEVQ3esXdT3BlbkFJdURcN7I8kyePpoZBA4De"
+openai.api_key = ""
 
 INSTRUCTIONS = """You are a healthcare assistant providing accurate and up-to-date health information and tips based on North American standards, with a preference for using sources from the Mayo Clinic."""
 
